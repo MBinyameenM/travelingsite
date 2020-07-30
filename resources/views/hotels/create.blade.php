@@ -47,8 +47,8 @@
 							<option value="{{ $hotel->city }}">{{ $hotel->city }}</option>
 							@endif
 							<option value="Lahore"> Lahore </option>
-							<option value="Multan"> Multan </option>
-							<option value="Jehlum"> Jehlum </option>
+							<option value="Sialkot"> Sialkot </option>
+							
 						</select>
 					</div>
 				</div>
@@ -57,6 +57,13 @@
 					<div class="form-group">
 						<label for="capacity"> Capacity </label>
 						<input type="number" name="capacity" required id="capacity" class="form-control" placeholder="Enter Capacity" value="@if(isset($hotel)){{ $hotel->capacity }}@endif">
+					</div>
+				</div>
+
+				<div class="col-4">
+					<div class="form-group">
+						<label for="rate_per_person"> Rate per Person </label>
+						<input type="number" name="rate_per_person" required id="rate_per_person" class="form-control" placeholder="Enter Rate per Person" value="@if(isset($hotel)){{ $hotel->rate_per_person }}@endif">
 					</div>
 				</div>
 
@@ -136,7 +143,7 @@
 		    	<div class="col-12">
 		    		<div class="form-group">
 			    		<label for="images"> Upload Images of Hotel: </label>
-	    				<input type="file" name="images[]" id="images"  multiple />
+	    				<input type="file" name="images[]" required id="images"  multiple />
 	    			</div>
 		    	</div>
 		    </div>

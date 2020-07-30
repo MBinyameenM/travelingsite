@@ -50,21 +50,25 @@ class HotelsController extends Controller
         $hotel = $request->except('_token','wifi','parking','spa','ac','images');
         $hotel = \Auth::user()->hotels()->create($hotel);
         $facilities = new Facilities();
-        $facilities = $request->except('name','city','capacity','phone','address','_token','images');
+        $facilities = $request->except('name','city','rate_per_person','capacity','phone','address','_token','images');
         $hotel->facilities()->create($facilities);
 
-        $path = 'Images\Hotels\\';
-        foreach( $request->images as $img )
+        if( $request->images )
         {
-            $pic = new Gallery(); 
-            $pic->image = $img->getClientOriginalName();
-            $pic->unique_identifier = sha1(time().uniqid()).'jpg';
-            $pic->path = $path;
+            $path = 'Images\Hotels\\';
+            foreach( $request->images as $img )
+            {
+                $pic = new Gallery(); 
+                $pic->image = $img->getClientOriginalName();
+                $pic->unique_identifier = sha1(time().uniqid()).'jpg';
+                $pic->path = $path;
 
-            $hotel->images()->save($pic);
+                $hotel->images()->save($pic);
 
-            $img->storeAs($path, $pic->unique_identifier);
+                $img->storeAs($path, $pic->unique_identifier);
+            }
         }
+        
 
         return redirect('hotels')->with('success','Hotel is added successfully.');
 
@@ -163,6 +167,17 @@ class HotelsController extends Controller
             \Storage::delete($img->path.$img->unique_identifier);
         }
         $hotel->images()->delete();
+        
+        foreach( $hotel->events as $event )
+        {
+            foreach( $event->images as $img )
+            {
+                \Storage::delete($img->path.$img->unique_identifier);
+                $img->delete();
+            }
+            $event->delete();    
+        }
+        
         $hotel->delete();
 
         return back()->with('success','Hotel is deleted successfully.');
@@ -172,7 +187,8 @@ class HotelsController extends Controller
     public function search_hotel(Request $request)
     {
         $capacity = explode('-',$request->people) [1];
-        $hotels = Hotels::where('city',$request->city)->where('capacity','>',$capacity)->get();
+        // $hotels = Hotels::where('city',$request->city)->where('capacity','>=',$capacity)->get();
+        $hotels = Hotels::where('city',$request->city)->get();
         return view('hotels.search hotels',compact('hotels'));
     }
 }

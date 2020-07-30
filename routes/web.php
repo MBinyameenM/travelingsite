@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'PagesController@home')->name('home');
 Route::get('about','PagesController@about');
 Route::get('contact_us','PagesController@contact_us');
-Route::get('hotel','PagesController@hotels');
+Route::get('hotel','PagesControllexr@hotels');
 Route::get('hotel_events','PagesController@events');
 
 
@@ -35,6 +35,7 @@ Route::resource('hotels','HotelsController');
 Route::resource('reviews','ReviewsController');
 Route::view('dashboard','admin/index')->middleware('auth');
 Route::get('change_user_role/{user}','UserController@change_role');
+Route::get('change_user_status/{user}','UserController@change_status');
 Route::post('search_hotel','HotelsController@search_hotel');
 
 Route::get('test',function(){

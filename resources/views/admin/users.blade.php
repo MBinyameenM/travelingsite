@@ -45,6 +45,7 @@
                         <th> E-mail </th>
                         <th> Role </th>
                         <th> Change Role </th>
+                        <th> Status </th>
                         <th> Delete </th>
                       </tr>
                     </thead> 
@@ -64,6 +65,13 @@
                             <a href="{{ url('change_user_role/'.$user->id) }}">
                               @if( $user->user_role == 1 ) Make Manager
                               @else Make Admin
+                              @endif 
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url('change_user_status/'.$user->id) }}">
+                              @if( $user->status == 1 ) Block
+                              @else Unblock
                               @endif 
                             </a>
                         </td>

@@ -50,18 +50,22 @@ class EventsController extends Controller
         $event = new Events();
         $event = $event->create($request->except('_token','images'));
 
-        $path = 'Images\Events\\';
-        foreach( $request->images as $img )
+        if( $request->images )
         {
-            $pic = new Gallery(); 
-            $pic->image = $img->getClientOriginalName();
-            $pic->unique_identifier = sha1(time().uniqid()).'jpg';
-            $pic->path = $path;
+            $path = 'Images\Events\\';
+            foreach( $request->images as $img )
+            {
+                $pic = new Gallery(); 
+                $pic->image = $img->getClientOriginalName();
+                $pic->unique_identifier = sha1(time().uniqid()).'jpg';
+                $pic->path = $path;
 
-            $event->images()->save($pic);
+                $event->images()->save($pic);
 
-            $img->storeAs($path, $pic->unique_identifier);
+                $img->storeAs($path, $pic->unique_identifier);
+            }    
         }
+        
 
         return redirect('events')->with('success','Event is add successfully.');
     }

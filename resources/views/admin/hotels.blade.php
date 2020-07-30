@@ -47,6 +47,7 @@
                         <th> Name </th>
                         <th> City </th>
                         <th> Capacity </th>
+                        <th> Rate per Person </th>
                         <th> Phone </th>
                         <th> Rating </th>
                         <th> Address </th>
@@ -60,6 +61,7 @@
                         <td> {{ $hotel->name }} </td>
                         <td> {{ $hotel->city }} </td>
                         <td> {{ $hotel->capacity }} </td>
+                        <td> {{ $hotel->rate_per_person }} </td>
                         <td> {{ $hotel->phone }} </td>
                         <td> {{ $hotel->ratings->avg('rating') }} </td>
                         <td> {{ $hotel->address }} </td>

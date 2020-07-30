@@ -124,6 +124,7 @@ padding: 15px;
 
                             <div class="col-10">
                                 <h5> <i class="fas fa-calendar-alt"></i> {{ $event->title }} <i class="ml-1 fas fa-arrow-alt-circle-right"></i> <a class="event_category" href="{{ url('events/category/'.$event->category->id) }}">{{ $event->category->title }} </a> <span class="ml-5 date"> <i class="fas fa-clock"></i> {{ date_format(date_create($event->created_at),'Y-m-d') }} </span> </h5>
+                                <h6> Rs: {{ $event->rate }} </h6>
                                 <p class="f-para">{{ $event->description }}</p>
                             </div>
 

@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-    	return view('admin\users',compact('users'));
+    	return view('admin\users', compact('users'));
     }
 
     /**
@@ -29,8 +29,8 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
      *
+     * Store a newly created resource in storage.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -81,6 +81,28 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        foreach( $user->hotels as $hotel)
+        {
+            $hotel->facilities()->delete();
+            foreach( $hotel->images as $img )
+            {
+                \Storage::delete($img->path.$img->unique_identifier);
+            }
+
+            foreach( $hotel->events as $event )
+            {
+                foreach( $event->images as $img )
+                {
+                    \Storage::delete($img->path.$img->unique_identifier);
+                    $img->delete();
+                }
+                $event->delete();    
+            }
+            $hotel->ratings()->delete();
+            $hotel->images()->delete();
+            $hotel->delete();
+        }
+
         $user->delete();
         return back()->with(['success' => 'User role is deleted successfully.']);
     }
@@ -95,6 +117,21 @@ class UserController extends Controller
         $user->save();
 
         return back()->with(['success' => 'User role is changed successfully.']);
+
+    }
+
+    public function change_status(User $user)
+    {
+        if( $user->status == 1 )
+        { 
+            $user->status = 0;
+            $user->save();
+            return back()->with(['success' => 'User is blocked.']);
+        }
+        
+            $user->status = 1;
+            $user->save();
+            return back()->with(['success' => 'User is unblocked.']);
 
     }
 }

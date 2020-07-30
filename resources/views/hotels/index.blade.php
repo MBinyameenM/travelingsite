@@ -29,7 +29,7 @@
             @foreach( $hotels as $hotel )
                 <div class="col-lg-4 col-md-6">
                     <div class="room-item">
-                        <img src="{{ asset('../storage/app/'.$hotel->images->first()->path.$hotel->images->first()->unique_identifier) }}" alt="">
+                        <img height="450px" src="{{ asset('../storage/app/'.$hotel->images->first()->path.$hotel->images->first()->unique_identifier) }}" alt="">
                         <div class="ri-text">
                             <h4> {{ $hotel->name }} </h4>
                             <h3> Rs. {{ $hotel->rate_per_person }}<span>/Perperson</span></h3>
@@ -43,6 +43,11 @@
                                     <tr>
                                         <td class="r-o">Capacity:</td>
                                         <td>{{ $hotel->capacity }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="r-o">Rate per Person:</td>
+                                        <td>{{ $hotel->rate_per_person }}</td>
                                     </tr>
 
                                     <tr>

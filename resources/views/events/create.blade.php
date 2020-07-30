@@ -35,7 +35,7 @@
 				<div class="col-4">
 					<div class="form-group">
 						<label for="title"> Title </label>
-						<input type="text" id="title" name="title"title class="form-control" placeholder="Enter Title" required value="@if(isset($event)){{ $event->title }}@endif" autofocus>
+						<input type="text" id="title" name="title" class="form-control" placeholder="Enter Title" required value="@if(isset($event)){{ $event->title }}@endif" autofocus>
 					</div>
 				</div>
 
@@ -46,9 +46,15 @@
 							@if(isset($event))
 							<option value="{{ $event->hotel_id }}">{{ \App\Hotels::select('name')->where('id',$event->hotel_id)->get()[0]->name }}</option>
 							@endif
-							@foreach( \App\Hotels::select('name','id')->orderBy('name','asc')->get() as $hotel )
-							<option value="{{ $hotel->id }}"> {{ $hotel->name }} </option>
-							@endforeach
+							@if( \Auth::user()->user_role == 1 )
+								@foreach( \App\Hotels::select('name','id')->orderBy('name','asc')->get() as $hotel )
+								<option value="{{ $hotel->id }}"> {{ $hotel->name }} </option>
+								@endforeach
+							@elseif( \Auth::user()->user_role == 2 )
+								@foreach( \App\Hotels::select('name','id')->whereUserId(\Auth::user()->id)->orderBy('name','asc')->get() as $hotel )
+								<option value="{{ $hotel->id }}"> {{ $hotel->name }} </option>
+								@endforeach
+							@endif
 						</select>
 					</div>
 				</div>
